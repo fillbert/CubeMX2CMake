@@ -42,9 +42,6 @@ project(${CURRENT_PROJECT_NAME}
 	LANGUAGES C CXX ASM
 )
 
-# include modules folder
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
-
 # Manage all the Kconfig routines
 include(cmake/top.cmake)
 
@@ -64,9 +61,55 @@ set(CPU_PARAMETERS
 )
 # ##############################################################################
 # GRABBING MAKEFILE VARIABLES
-include(MakeFileGrabber)
-Grab_Makefile()
+function(MakeFileVariableGrabber PathToMakeFIle VarName OutVariable)
+    # make coomand to evaluare makefile on the fly
+    set(mkcmd "make --eval='print-var: ; @echo $(${VarName})' print-var")
 
+    # grab variable value
+    execute_process(COMMAND CMD /c "${mkcmd}"
+        OUTPUT_VARIABLE  ${OutVariable}
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        WORKING_DIRECTORY ${PathToMakeFIle}
+    )
+    # export valuer
+    set(${OutVariable} "${${OutVariable}}" PARENT_SCOPE)
+endfunction()
+# ##############################################################################
+# export asm startup file
+MakeFileVariableGrabber(${CMAKE_CURRENT_SOURCE_DIR}/${CUBEMX_PROJECT_NAME} ASM_SOURCES ASM_SOURCES)
+set(STARTUP_SCRIPT ${CUBEMX_DIR}/${ASM_SOURCES})
+
+# export linker script
+MakeFileVariableGrabber(${CMAKE_CURRENT_SOURCE_DIR}/${CUBEMX_PROJECT_NAME} LDSCRIPT LDSCRIPT)
+set(MCU_LINKER_SCRIPT ${CUBEMX_DIR}/${LDSCRIPT})
+
+# export compiller c/c++ flags
+MakeFileVariableGrabber(${CMAKE_CURRENT_SOURCE_DIR}/${CUBEMX_PROJECT_NAME} CFLAGS CFLAGS)
+separate_arguments(CFLAGS)
+
+# export assembler flags
+MakeFileVariableGrabber(${CMAKE_CURRENT_SOURCE_DIR}/${CUBEMX_PROJECT_NAME} ASFLAGS ASFLAGS)
+separate_arguments(ASFLAGS)
+
+# export linker flags
+MakeFileVariableGrabber(${CMAKE_CURRENT_SOURCE_DIR}/${CUBEMX_PROJECT_NAME} LDFLAGS LDFLAGS)
+
+# export project definitions
+MakeFileVariableGrabber(${CMAKE_CURRENT_SOURCE_DIR}/${CUBEMX_PROJECT_NAME} C_DEFS C_DEFS)
+
+# export sources -------------------------------
+MakeFileVariableGrabber(${CMAKE_CURRENT_SOURCE_DIR}/${CUBEMX_PROJECT_NAME} C_SOURCES STM32CUBEMX_SOURCES)
+# make lists
+separate_arguments(STM32CUBEMX_SOURCES)
+# fix pathes
+list(TRANSFORM STM32CUBEMX_SOURCES PREPEND "${CUBEMX_DIR}/")
+
+# export headers -------------------------------
+MakeFileVariableGrabber(${CMAKE_CURRENT_SOURCE_DIR}/${CUBEMX_PROJECT_NAME} C_INCLUDES CUBEMX_INCLUDE_DIRECTORIES)
+# make lists
+separate_arguments(CUBEMX_INCLUDE_DIRECTORIES)
+# fix pathes
+list(TRANSFORM CUBEMX_INCLUDE_DIRECTORIES REPLACE "^-I" "${CUBEMX_DIR}/")
 # ##############################################################################
 # add exacutable name
 set(EXECUTABLE ${CMAKE_PROJECT_NAME})
@@ -82,8 +125,8 @@ add_subdirectory(${USER_PROJECT_CODE})
 
 # Embedded macros (defines)
 target_compile_definitions(${EXECUTABLE}
-    PRIVATE
-        ${C_DEFS}
+	PRIVATE
+		${C_DEFS}
 )
 
 # Add header directories (AFTER add_executable !!)
