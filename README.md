@@ -19,17 +19,24 @@ The benefits are that it all works under VSdode Studio and has perfect Menuconfi
 To deploy this project run
 
 ```bash
-  $git clone repo
+  $git clone https://github.com/fillbert/CubeMX2CMake.git
 ```
 ```bash
-  $cd repo
+  $cd CubeMX2CMake
 ```
 ```bash
-  $./env_setup.sh
+  $chmod 0777 env_setup.sh
 ```
+```bash
+  $source ./env_setup.sh
+```
+Wait until it works...
 ```bash
   $code .
 ```
+In VSCode:
+- ctrl+shift+b -> Build - DEBUG/RELEASE
+- Select Launch with proper project and run debugger...
 
 
 ## Usage/Examples
