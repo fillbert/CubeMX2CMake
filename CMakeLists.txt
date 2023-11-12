@@ -35,6 +35,9 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # ##############################################################################
 # ##############################################################################
 # ##############################################################################
+# save platform name
+set(CURRENT_PLATFORM_UNIX ${UNIX})
+# add toolchain file
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_HOME_DIRECTORY}/cmake/gcc-arm-none-eabi.cmake)
 
 project(${CURRENT_PROJECT_NAME}
@@ -65,8 +68,14 @@ function(MakeFileVariableGrabber PathToMakeFIle VarName OutVariable)
     # make coomand to evaluare makefile on the fly
     set(mkcmd "make --eval='print-var: ; @echo $(${VarName})' print-var")
 
+    if (CURRENT_PLATFORM_UNIX)
+        set(RUN_ARG "bash" "-c")
+    else()
+        set(RUN_ARG "CMD" "/c")
+    endif()
+
     # grab variable value
-    execute_process(COMMAND CMD /c "${mkcmd}"
+    execute_process(COMMAND ${RUN_ARG} "${mkcmd}"
         OUTPUT_VARIABLE  ${OutVariable}
         OUTPUT_STRIP_TRAILING_WHITESPACE
         WORKING_DIRECTORY ${PathToMakeFIle}
