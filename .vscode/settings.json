@@ -1,0 +1,27 @@
+{
+    "files.associations": {
+        "main.c": "c",
+        "main.cpp": "cpp",
+        "array": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "ranges": "cpp",
+        "utility": "cpp",
+        "segger_rtt_conf.h": "c",
+        "segger_rtt.h": "c",
+        "freertos.h": "c",
+        "main.h": "c",
+        "logger.h": "c"
+    },
+    "C_Cpp.default.cStandard": "c99",
+    "C_Cpp.default.cppStandard": "c++98",
+    "C_Cpp.default.intelliSenseMode": "gcc-arm",
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/**"
+    ],
+    "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/compile_commands.json",
+    "C_Cpp.default.compileCommands": "${workspaceFolder}/build/compile_commands.json",
+    "sonarlint.output.showAnalyzerLogs": true,
+    "sonarlint.output.showVerboseLogs": true,
+    "cortex-debug.showRTOS": true,
+}

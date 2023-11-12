@@ -1,0 +1,21 @@
+mainmenu "Project Configuration"
+
+# Include Drivers
+rsource "UserCode/Kconfig"
+
+# Application configuration
+menu "Application settings"
+
+choice
+	prompt "Build configuration"
+	config TEST_APP_RELEASE
+		bool "Release"
+		depends on DEBUG_IFACE_NONE
+
+ 	config TEST_APP_DEBUG
+		bool "Debug"
+endchoice
+
+
+
+endmenu
