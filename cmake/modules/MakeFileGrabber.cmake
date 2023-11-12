@@ -3,19 +3,20 @@
 # ##############################################################################
 # funstion to grab variable from make file
 function(MakeFileVariableGrabber PathToMakeFIle VarName OutVariable)
-    # make coomand to evaluare makefile on the fly
-    set(mkcmd "make --eval='print-var: ; @echo $(${VarName})' print-var")
-
-    if (CURRENT_PLATFORM_UNIX)
-        set(RUN_ARG "bash" "-c")
-    else()
-        set(RUN_ARG "CMD" "/c")
+    # Evaluate Makefile variable value in a quiet way to avoid make[1] noise.
+    set(MAKE_GRABBER_PROGRAM "${CMAKE_MAKE_PROGRAM}")
+    if(NOT MAKE_GRABBER_PROGRAM)
+        set(MAKE_GRABBER_PROGRAM "make")
     endif()
 
-    # grab variable value
-    execute_process(COMMAND ${RUN_ARG} "${mkcmd}"
+    execute_process(COMMAND "${MAKE_GRABBER_PROGRAM}"
+        --no-print-directory
+        --silent
+        "--eval=print-var: ; @echo $(${VarName})"
+        print-var
         OUTPUT_VARIABLE  ${OutVariable}
         OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_QUIET
         WORKING_DIRECTORY ${PathToMakeFIle}
     )
     # export valuer
@@ -24,6 +25,15 @@ endfunction()
 # ##############################################################################
 
 function(Grab_Makefile)
+    set(CUBEMX_MAKEFILE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${CUBEMX_PROJECT_NAME}/Makefile")
+
+    if(EXISTS "${CUBEMX_MAKEFILE_PATH}")
+        # Re-run CMake configure when CubeMX Makefile changes.
+        set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CUBEMX_MAKEFILE_PATH}")
+    else()
+        message(FATAL_ERROR "CubeMX Makefile not found: ${CUBEMX_MAKEFILE_PATH}")
+    endif()
+
     # export asm startup file
     MakeFileVariableGrabber(${CMAKE_CURRENT_SOURCE_DIR}/${CUBEMX_PROJECT_NAME} ASM_SOURCES ASM_SOURCES)
     set(STARTUP_SCRIPT ${CUBEMX_DIR}/${ASM_SOURCES} PARENT_SCOPE)

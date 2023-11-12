@@ -1,5 +1,5 @@
 # ##############################################################################
-#                Copyright filbertby(c) 2023 filbertby@gmail.com
+#                Copyright filbertby(c) 2026 filbertby@gmail.com
 # ##############################################################################
 
 # ##############################################################################
@@ -8,18 +8,18 @@
 cmake_minimum_required(VERSION 3.20)
 # if you want to use only makefile setting make this flag ON
 # Otherwise set it  OFF and make all settings manually below
-set(GET_ALL_SETTINGS_FROM_MAKEFILE OFF)
+set(GET_ALL_SETTINGS_FROM_MAKEFILE ON)
 
 # set project name
 set(CURRENT_PROJECT_NAME test-app)
 
 # sec CUBE-MX folder name
-set(CUBEMX_PROJECT_NAME test105)
+set(CUBEMX_PROJECT_NAME test401)
 
 # set MCU famely [value needs to be set according your CPU core]
 # set(MCU_FAMILY CM0)
-set(MCU_FAMILY CM3)
-# set(MCU_FAMILY CM4)
+# set(MCU_FAMILY CM3)
+set(MCU_FAMILY CM4)
 
 # set user code dir mane
 set(USER_PROJECT_CODE UserCode)
@@ -62,8 +62,12 @@ set(CPU_PARAMETERS
     $<$<STREQUAL:${MCU_FAMILY},CM0>:-mcpu=cortex-m0>
     $<$<STREQUAL:${MCU_FAMILY},CM3>:-mcpu=cortex-m3>
     $<$<STREQUAL:${MCU_FAMILY},CM4>:-mcpu=cortex-m4>
-    $<$<NOT:$<STREQUAL:${MCU_FAMILY},CM0>>:-mfloat-abi=soft>
-    $<$<NOT:$<STREQUAL:${MCU_FAMILY},CM0>>:-mfpu=fpv4-sp-d16>
+    #
+    $<$<STREQUAL:${MCU_FAMILY},CM3>:-mfloat-abi=soft>
+    $<$<STREQUAL:${MCU_FAMILY},CM3>:-mfpu=fpv4-sp-d16>
+    #
+    $<$<STREQUAL:${MCU_FAMILY},CM4>:-mfloat-abi=hard>
+    $<$<STREQUAL:${MCU_FAMILY},CM4>:-mfpu=fpv4-sp-d16>
 )
 # ##############################################################################
 # GRABBING MAKEFILE VARIABLES

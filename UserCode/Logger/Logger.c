@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include "Logger.h"
 #include <SEGGER_RTT.h>
+#include "ETM_init.h"
 
 /**
  * @brief   stub if we not implemented this function
@@ -22,6 +23,8 @@ __attribute__((weak)) uint32_t xTaskGetTickCount( void )
 {
     return 0;
 }
+
+#if CONFIG_DEBUG_IFACE_SEGGER
 
 /**
  * @brief Print RTT Log Output
@@ -44,3 +47,47 @@ void mLogger ( const char * e, const char * format, ...)
     // print footer
     SEGGER_RTT_printf(0, "\n\r");
 }
+
+#endif
+
+#if CONFIG_DEBUG_IFACE_STLINK
+
+
+void ITM_Print(const char *s)
+{
+    while (*s)
+        ITM_SendCharInline(*s++);
+}
+
+void ITM_vprintf(const char *fmt, va_list args)
+{
+    char buffer[256];
+    vsnprintf(buffer, sizeof(buffer), fmt, args);
+    ITM_Print(buffer);
+}
+
+void ITM_printf(const char *fmt, ...)
+{
+    char buffer[256];
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(buffer, sizeof(buffer), fmt, args);
+    va_end(args);
+    ITM_Print(buffer);
+}
+
+void mLogger(const char *e, const char *format, ...)
+{
+    // print header
+    ITM_printf("%010lu%s", xTaskGetTickCount(), e);
+
+    // print body
+    va_list args;
+    va_start(args, format);
+    ITM_vprintf(format, args);
+    va_end(args);
+
+    // print footer
+    ITM_Print("\n\r");
+}
+#endif

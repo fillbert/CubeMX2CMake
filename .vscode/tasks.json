@@ -25,7 +25,7 @@
 			"problemMatcher": [],
 			"group": {
 				"kind": "build",
-				"isDefault": false
+				"isDefault": true
 			}
 		},
 		{
@@ -50,7 +50,7 @@
 			"problemMatcher": [],
 			"group": {
 				"kind": "build",
-				"isDefault": false
+				"isDefault": true
 			}
 		},
 		{
@@ -75,7 +75,7 @@
 				"--build", "./build", "-j8"
 			],
 			"problemMatcher": [],
-			"dependsOn": "cmake: configure (debug)",
+			//"dependsOn": "cmake: configure (debug)",
 			"group": {
 				"kind": "build",
 				"isDefault": true

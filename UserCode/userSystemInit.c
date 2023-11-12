@@ -16,6 +16,7 @@
 #include "task.h"
 #include "queue.h"
 #include "main.h"
+#include "ETM_init.h"
 
 /**
  * @brief Tets task to LED flashing
@@ -92,6 +93,9 @@ void buttonTask ( void * pvParameters )
 void userCoreInit(void)
 {
     BaseType_t res = pdFALSE;
+
+    // init  SWO for Port 0
+    SWO_Init( 0x01 );
 
     res = xTaskCreate(taskLedFlasher, "Led Flasher", 128, NULL, 2, NULL);
 

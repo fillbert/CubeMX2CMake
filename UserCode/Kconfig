@@ -6,10 +6,14 @@ choice
 		bool "None"
 	config DEBUG_IFACE_SEGGER
 		bool "SEGGER interface"
+	config DEBUG_IFACE_STLINK
+		bool "ST-LINK interface"
 endchoice
 
 config BSP_DEBUG_INTERFACE
 	string
 	default LOG_VIA_SEGGER_RTT  if DEBUG_IFACE_SEGGER
+	default LOG_VIA_STLINK  if DEBUG_IFACE_STLINK
+
 
 endmenu

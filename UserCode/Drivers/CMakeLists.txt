@@ -7,6 +7,10 @@ elseif (${MCU_FAMILY} STREQUAL  "CM4")
     add_subdirectory(SEGGER_RTT_M4)
 endif()
 
+# add ETM driver folder
+if (CONFIG_DEBUG_IFACE_STLINK AND CONFIG_TEST_APP_DEBUG)
+    add_subdirectory(STLINK_ETM)
+endif()
 # add another driver folder here
 # add_subdirectory(ANY_DIR)
 # ...

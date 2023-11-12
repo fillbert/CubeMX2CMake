@@ -8,7 +8,6 @@
         "donjayamanne.githistory",
         "eamodio.gitlens",
         "sonarsource.sonarlint-vscode",
-        "spmeesseman.vscode-taskexplorer",
         "redhat.vscode-yaml",
         "ms-vscode-remote.vscode-remote-extensionpack"
     ]

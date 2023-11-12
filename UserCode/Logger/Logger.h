@@ -18,7 +18,8 @@
 void mLogger(const char * e, const char * format, ...);
 
 
-#if defined (CONFIG_DEBUG_IFACE_SEGGER) && defined (CONFIG_TEST_APP_DEBUG)
+#if defined(CONFIG_TEST_APP_DEBUG) && \
+(defined(CONFIG_DEBUG_IFACE_SEGGER) || defined(CONFIG_DEBUG_IFACE_STLINK))
 
     /** Macro to log an error message */
     #define LOGERROR(format, ...)            mLogger("[E]", format, ##__VA_ARGS__)
