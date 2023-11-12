@@ -35,6 +35,9 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # ##############################################################################
 # ##############################################################################
 # ##############################################################################
+# save platform name
+set(CURRENT_PLATFORM_UNIX ${UNIX})
+# add toolchain file
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_HOME_DIRECTORY}/cmake/gcc-arm-none-eabi.cmake)
 
 project(${CURRENT_PROJECT_NAME}
