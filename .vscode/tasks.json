@@ -1,0 +1,128 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "cmake: configure (debug)",
+			"type": "process",
+			"command": "cmake",
+			"windows": {
+				"args": [
+					"-B", "./build",
+					"-G", "MinGW Makefiles",
+					"-DBOARD=test_app_debug",
+					"-DCMAKE_EXPORT_COMPILE_COMMANDS=1"
+				],
+			},
+			"linux": {
+				"args": [
+					"-B", "./build",
+					"-DBOARD=test_app_debug",
+					"-DCMAKE_EXPORT_COMPILE_COMMANDS=1"
+				],
+			},
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"label": "cmake: configure (release)",
+			"type": "process",
+			"command": "cmake",
+			"windows": {
+				"args": [
+					"-B", "./build",
+					"-G", "MinGW Makefiles",
+					"-DBOARD=test_app_release",
+					"-DCMAKE_EXPORT_COMPILE_COMMANDS=1"
+				],
+			},
+			"linux": {
+				"args": [
+					"-B", "./build",
+					"-DBOARD=test_app_release",
+					"-DCMAKE_EXPORT_COMPILE_COMMANDS=1"
+				],
+			},
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"label": "Build - RELEASE",
+			"type": "process",
+			"command": "cmake",
+			"args": [
+				"--build", "./build", "-j8"
+			],
+			"problemMatcher": [],
+			"dependsOn": "cmake: configure (release)",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Build - DEBUG",
+			"type": "process",
+			"command": "cmake",
+			"args": [
+				"--build", "./build", "-j8"
+			],
+			"problemMatcher": [],
+			"dependsOn": "cmake: configure (debug)",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "cmake: menuconfig",
+			"type": "process",
+			"command": "cmake",
+			"args": [
+				"--build", "./build",
+				"--target", "menuconfig"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "cmake: guiconfig",
+			"type": "process",
+			"command": "cmake",
+			"args": [
+				"--build", "./build",
+				"--target", "guiconfig"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "cmake: clean",
+			"type": "process",
+			"command": "rm",
+			"args": [
+				"-r",
+				"-f",
+				"./build"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+	]
+}
