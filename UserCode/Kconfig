@@ -1,0 +1,15 @@
+menu "BSP Configuration"
+
+choice
+	prompt "Debug interface"
+	config DEBUG_IFACE_NONE
+		bool "None"
+	config DEBUG_IFACE_SEGGER
+		bool "SEGGER interface"
+endchoice
+
+config BSP_DEBUG_INTERFACE
+	string
+	default LOG_VIA_SEGGER_RTT  if DEBUG_IFACE_SEGGER
+
+endmenu
