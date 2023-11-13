@@ -12,6 +12,8 @@ The benefits are that it all works under VSdode Studio and has perfect Menuconfi
 - Present awesome Menuconfig feature
 - Manual and Makefile-configured build
 - Cross-platform
+- Segger Debuger
+- RTT Debug Logging in the VSCode console
 
 
 ## Deployment
