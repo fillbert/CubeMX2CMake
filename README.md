@@ -79,7 +79,7 @@ The paradigm for the CMake-based projects is to avoid GLOBE usage, and the best 
 The Project based on this project [@jameswalmsley](https://github.com/jameswalmsley/cmake-kconfig/tree/master)
 
 - Author:   [@filbertby](https://github.com/fillbert)
-- Reviewer: [@annaBoro](https://github.com/annaBoro)
+- Reviewer: [@annaBoro](here can your name)
 
 
 ## 🚀 About Me
